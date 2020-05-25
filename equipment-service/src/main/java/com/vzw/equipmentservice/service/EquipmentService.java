@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,8 @@ public class EquipmentService {
 
 	@Autowired
 	private EquipmentRepository repository;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(EquipmentService.class);
 
 	public Flux<Equipment> fetchAllEquipments() {
 		List<Equipment> findAll = repository.findAll();
@@ -50,6 +54,7 @@ public class EquipmentService {
 	}
 
 	public Mono<VZWEquipment> fetchEquipmentByCustomerId(Long customerId) {
+		LOGGER.info("Fetching Equipment details for customerId: {}", customerId);
 		List<CustomerEquipment> findByCustomerId = equipmentRepository.findByCustomerId(customerId);
 		List<Long> equipmentIds = findByCustomerId.stream().map(m->m.getEquipmentId()).collect(Collectors.toList());
 		List<Equipment> equipments = repository.findAllById(equipmentIds);

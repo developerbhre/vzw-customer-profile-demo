@@ -1,5 +1,7 @@
 package com.vzw.profileservice.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -33,8 +35,12 @@ public class ProfileService {
 	@Autowired
 	@Lazy
 	private EurekaClient eurekaClient;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProfileService.class);
 
 	public Mono<VZWProfile> fetchProfile(Long customerId) {
+		
+		 LOGGER.info("Fetching Customer and Equipment details for CustomerId: {}", customerId);
 		
 		Application application = eurekaClient.getApplication(customerServiceName);
 		InstanceInfo instanceInfo = application.getInstances().get(0);

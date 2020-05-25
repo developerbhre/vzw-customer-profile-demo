@@ -3,6 +3,8 @@ package com.vzw.customerservice.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,8 @@ public class CustomerService {
 
 	@Autowired
 	private AddressRepository addressRepository;
+	
+	 private static final Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);
 
 	public Flux<Customer> fetchAllCustomers() {
 
@@ -35,6 +39,8 @@ public class CustomerService {
 	}
 
 	public Mono<VZWCustomer> fetchCustomer(Long customerId) {
+		LOGGER.info("Fetching Customer details for customerId: {}", customerId);
+		 
 		Optional<Customer> findById = repository.findById(customerId);
 		List<Address> findByCustomerId = addressRepository.findByCustomerId(customerId);
 		VZWCustomer vzwCustomer = null;
