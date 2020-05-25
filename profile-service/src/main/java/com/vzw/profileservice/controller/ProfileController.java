@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/profile")
 public class ProfileController {
 	
+	
 	@Autowired
 	private ProfileService profileService;
 
@@ -22,5 +23,11 @@ public class ProfileController {
 	public Mono<VZWProfile> getCustomers(@PathVariable(name = "customer_id") Long customerId) {
 		
 		return profileService.fetchProfile(customerId);
+	}
+	
+	@GetMapping(path="/user/{customer_id}",produces = "application/json")
+	public Mono<String> getUserRole(@PathVariable(name = "customer_id") Long customerId) {
+		
+		return profileService.getUserRole(customerId);
 	}
 }
